@@ -6,3 +6,6 @@ authors = ["Tushar R. Gosavi <tushargosavi@gmail.com>"]
 [lib]
 crate-type = ["staticlib"]
 
+[dependencies]
+rlibc = "0.1.4"
+
