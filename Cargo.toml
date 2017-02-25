@@ -1,0 +1,8 @@
+[package]
+name = "tugos"
+version = "0.1.0"
+authors = ["Tushar R. Gosavi <tushargosavi@gmail.com>"]
+
+[lib]
+crate-type = ["staticlib"]
+
