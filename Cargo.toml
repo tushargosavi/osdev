@@ -9,3 +9,10 @@ crate-type = ["staticlib"]
 [dependencies]
 rlibc = "0.1.4"
 
+[profile.dev]
+panic = "abort"
+
+# The release profile, used for `cargo build --release`.
+[profile.release]
+panic = "abort"
+
