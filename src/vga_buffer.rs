@@ -58,7 +58,26 @@ pub struct Writer {
 impl Writer {
 
   fn newline(&mut self) {
-     // TODO
+    for row in 1..BUFFER_HEIGHT {
+      for col in 0..BUFFER_WIDTH {
+        let buffer = self.buffer();
+        let character = buffer.chars[row][col].read();
+        buffer.chars[row-1][col].write(character);
+      }
+    }
+    self.clear_row(BUFFER_HEIGHT - 1);
+    self.col_pos = 0;
+  }
+
+  fn clear_row(&mut self, row : usize) {
+    let blank = ScreenChar {
+      ascii_char : b' ',
+      color : ColorCode::new(Color::White, Color::Black),
+    };
+    let buffer = self.buffer();
+    for col in 0..BUFFER_WIDTH {
+      buffer.chars[row][col].write(blank);
+    }
   }
 
   fn buffer(&mut self) -> &mut Buffer {
