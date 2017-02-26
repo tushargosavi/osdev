@@ -5,7 +5,9 @@
 
 extern crate rlibc;
 extern crate volatile;
+extern crate spin;
 
+#[macro_use]
 mod vga_buffer;
 
 #[allow(non_snake_case)]
@@ -16,7 +18,10 @@ pub extern "C" fn _Unwind_Resume() -> ! {
 
 #[no_mangle]
 pub extern fn rust_main() {
-  vga_buffer::print_something();
+  vga_buffer::clear_screen();
+  println!("Hello World");
+  println!("This is cool");
+  println!("{}", { println!("inner"); "outer" });
   loop {}
 }
 

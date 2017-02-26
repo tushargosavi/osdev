@@ -129,8 +129,33 @@ pub fn print_something() {
   write!(writer, "The numbers are {} and {}", 42, 1.0/3.0);
 }
 
-pub static mut VGA : Writer = Writer {
+use spin::Mutex;
+
+pub static WRITER: Mutex<Writer> = Mutex::new(Writer {
   col_pos : 0,
-  color_code : ColorCode::new(Color::White, Color::Black),
+  color_code : ColorCode::new(Color::LightGreen, Color::Black),
   buffer: unsafe { Unique::new(0xb8000 as *mut _) },
-};
+});
+
+macro_rules! println {
+    ($fmt:expr) => (print!(concat!($fmt, "\n")));
+    ($fmt:expr, $($arg:tt)*) => (print!(concat!($fmt, "\n"), $($arg)*));
+}
+
+macro_rules! print {
+    ($($arg:tt)*) => ({
+        $crate::vga_buffer::print(format_args!($($arg)*));
+    });
+}
+
+pub fn print(args: fmt::Arguments) {
+    use core::fmt::Write;
+    WRITER.lock().write_fmt(args).unwrap();
+}
+
+pub fn clear_screen()
+{
+  for row in 0..BUFFER_HEIGHT {
+    println!("")
+  }
+}
