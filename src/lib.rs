@@ -38,9 +38,19 @@ pub extern fn rust_main(multiboot_information_address: usize) {
     println!(" addr: 0x{:X}, size 0x{:X}, flags 0x{:x}",
              section.addr, section.size, section.flags);
   }
-
-
+  
+  print_kernel_addrs(elf_sections_tag);
+  let multiboot_start = multiboot_information_address;
+  let multiboot_end = multiboot_start + (boot_info.total_size as usize);
+  println!("mutliboot start 0x{:x} end 0x{:x}", multiboot_start, multiboot_end);
   loop {}
+}
+
+fn print_kernel_addrs(elf_sections_tag : &'static multiboot2::ElfSectionsTag)
+{
+  let kernel_start = elf_sections_tag.sections().map(|s| s.addr).min().unwrap();
+  let kernel_end = elf_sections_tag.sections().map(|s| s.addr + s.size).max().unwrap();
+  println!("kernel start 0x{:x} end 0x{:x}", kernel_start, kernel_end);
 }
 
 #[lang = "eh_personality"] extern fn eh_personality() {}
