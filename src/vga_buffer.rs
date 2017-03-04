@@ -88,7 +88,7 @@ impl Writer {
     match byte {
        b'\n' => self.newline(),
        byte => {
-         if (self.col_pos >= BUFFER_WIDTH) {
+         if self.col_pos >= BUFFER_WIDTH {
            self.newline();
          }
 
@@ -117,6 +117,8 @@ impl fmt::Write for Writer {
   }
 }
 
+#[allow(dead_code)]
+#[allow(unused_must_use)]
 pub fn print_something() {
   use core::fmt::Write;
   let mut writer = Writer {
@@ -153,6 +155,7 @@ pub fn print(args: fmt::Arguments) {
     WRITER.lock().write_fmt(args).unwrap();
 }
 
+#[allow(unused_variables)]
 pub fn clear_screen()
 {
   for row in 0..BUFFER_HEIGHT {
