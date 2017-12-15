@@ -7,16 +7,18 @@ const ENTRY_COUNT: usize = 512;
 
 mod entry;
 mod table;
+mod temp_page;
 
 pub type PhysicalAddress = usize;
 pub type VirtualAddress = usize;
 
+#[derive(Debug, Clone, Copy)]
 pub struct Page {
     number: usize,
 }
 
 impl Page {
-    fn containing_address(addr: VirtualAddress) -> Page {
+    pub fn containing_address(addr: VirtualAddress) -> Page {
         assert!(addr < 0x0000_8000_0000_0000 || addr >= 0xFFFF_8000_0000_000,
                 "invalid address: 0x{:x}",
                 addr);
